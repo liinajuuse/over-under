@@ -8,19 +8,15 @@
 
 library(tidyverse)
 
-setwd("~/GitHub/over-under/over-under")
-folder <- c("input","output","figures", "data", "scripts") #create subfolders
-for (j in seq_along(folder)){
-  if (file.exists(folder[j])) {
-    cat("The folder already exists \n")
-  } else {
-    dir.create(folder[j])}}
+#setwd("~/GitHub/over-under/over-under")
+#folder <- c("input","output","figures", "data", "scripts") #create subfolders
+#for (j in seq_along(folder)){
+#  if (file.exists(folder[j])) {
+#    cat("The folder already exists \n")
+#  } else {
+#    dir.create(folder[j])}}
 
 setwd("~/GitHub/over-under/over-under/input")
-
-
-
-
 
 rw <- list.files(pattern = '\\.dat')
 
@@ -30,7 +26,7 @@ rw <- list.files(pattern = '\\.dat')
 # in terms of number of rows and columns. In this case, a correct dat file
 # must have 22116 rows and 64 columns.
 
-SamplesTrial <- 3686 # enter the number of samples per trial
+SamplesTrial <- 3686 # enter the number of samples per trial // rows in file divided by nr of trials
 
 level_key = c("019" = "Anger", "115" = "Anger", 
               "031" = "Happy", "127" = "Happy",
@@ -48,10 +44,14 @@ for (i in 1:length(rw)) {
   nc <- ncol(read.table(file = rw[i], header = T, sep = ';'))
   di <- (nr * nc)
   tr <- (nr/SamplesTrial)
-  fo <- ifelse(di == 1415424, 'Correct', 'Incorrect')
+  fo <- ifelse(di == 1161090, 'Correct', 'Incorrect') #change 'di' values based on rows x columns value
   data_inspec <- rbind(data_inspec, data.frame('File' = rw[i], 'Rows' = nr, 'Columns' = nc, 'Cells' = di, 'Trials' = tr, 'Format' = fo))
   print(paste(rw[i], 'Done!', sep = ' '))
 }
+
+#setwd("~/GitHub/over-under/over-under/output")
+
+#write.csv(data_inspec, 'data_inspect.csv', row.names = F)
 
 fi <- data_inspec[data_inspec$Format == 'Correct', ]$File # dat files with correct dimensions. This object will be used in the following steps
 
